@@ -10,12 +10,12 @@
 4. 对象释放后内存被改动过，写上了可以访问的数据，可能不Crash、出现逻辑错误、间接访问到不可访问的数据（!!#38761d 随机Crash!!）。
 5. 对象释放后内存被改动过，写上了可以访问的数据，但是再次访问的时候执行的代码把别的数据写坏了，遇到这种Crash只能哭了（!!#38761d 随机Crash!!，难度大，概率低）！！
 6. 对象释放后再次release（几乎是!!#38761d 必现Crash!!，但也有例外，很常见）。
-![552dlb36dp.png](/tfl/pictures/202206/tapd_30391015_1655086426_4.png)
+![552dlb36dp.png](https://github.com/nibaJin/BadAccessProtect/blob/main/img/tapd_30391015_1655086426_4.png?raw=true)
 ## 如何防护
 **对象即将释放时，将其内存保留延长释放时间。**
 主要实现：MRC环境拦截基类(NSObject)dealloc方法，将对象内存保留不进行释放，并将对象变成自定义的类对象（僵尸对象），再进行僵尸对象内存管理。
 **dealloc底层实现**
-![企业微信20220613-102751.png](/tfl/pictures/202206/tapd_30391015_1655087292_4.png)
+![企业微信20220613-102751.png](https://github.com/nibaJin/BadAccessProtect/blob/main/img/tapd_30391015_1655087292_4.png?raw=true)
 NSObject执行 `dealloc` 时调用 `_objc_rootDealloc` 继而调用 `object_dispose` 随后调用 `objc_destructInstance` 方法，前几步都是条件判断和简单的跳转，最后的这个函数如下：
 `objc_destructInstance` 方法简单明确的干了三件事：
 1. 执行一个叫 `object_cxxDestruct` 的东西干了点什么事（析构函数，释放成员变量等）
@@ -63,9 +63,9 @@ void *objc_destructInstance(id obj)
 2.每30s进行清理僵尸对象。（如果对象释放之后30s之内未被引用到，将其释放）
 3.每5s查看一下当前可用内存。（如果内存即将警告，清理当前一半的僵尸对象，这里警告有个阀值：可用内存达到物理内存50%左右）
 4.applicationDidReceiveMemoryWarning内存收到警告，同3.
-![5e052f7f080ac9284798b7f01f357666.jpg](/tfl/pictures/202206/tapd_30391015_1655089837_24.jpg)
+![5e052f7f080ac9284798b7f01f357666.jpg](https://github.com/nibaJin/BadAccessProtect/blob/main/img/tapd_30391015_1655089837_24.jpeg?raw=true)
 ## 防护大致的一个时序图
-![企业微信20220608-150710.png](/tfl/pictures/202206/tapd_30391015_1655088798_95.png)
+![企业微信20220608-150710.png](https://github.com/nibaJin/BadAccessProtect/blob/main/img/tapd_30391015_1655088798_95.png?raw=true)
 
 ## References
 [#dealloc过程及.cxx_destruct的探究](https://blog.sunnyxx.com/2014/04/02/objc_dig_arc_dealloc/) 
