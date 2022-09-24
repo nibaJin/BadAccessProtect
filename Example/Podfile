@@ -1,0 +1,14 @@
+use_frameworks!
+
+platform :ios, '9.0'
+source "https://github.com/CocoaPods/Specs.git"
+
+target 'BGBadAccessProtect_Example' do
+  pod 'BGBadAccessProtect', :path => '../'
+
+  target 'BGBadAccessProtect_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

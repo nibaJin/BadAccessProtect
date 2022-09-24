@@ -1,0 +1,23 @@
+PODS:
+  - BGBadAccessProtect (0.1.0):
+    - BGBadAccessProtect/All (= 0.1.0)
+  - BGBadAccessProtect/All (0.1.0):
+    - BGBadAccessProtect/Core
+    - BGBadAccessProtect/ZombieHook
+  - BGBadAccessProtect/Core (0.1.0)
+  - BGBadAccessProtect/ZombieHook (0.1.0):
+    - BGBadAccessProtect/Core
+
+DEPENDENCIES:
+  - BGBadAccessProtect (from `../`)
+
+EXTERNAL SOURCES:
+  BGBadAccessProtect:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  BGBadAccessProtect: 39dcb8d88e1cdf80676f4db2cc53b70d586895d2
+
+PODFILE CHECKSUM: 0ef96e3fa73e7b3398694726e1db19b993001add
+
+COCOAPODS: 1.11.3
